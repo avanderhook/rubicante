@@ -1,0 +1,7 @@
+History.txt
+Manifest.txt
+README.txt
+Rakefile
+bin/rubicante
+lib/rubicante.rb
+test/test_rubicante.rb
