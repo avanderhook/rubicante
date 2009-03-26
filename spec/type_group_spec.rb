@@ -32,4 +32,24 @@ describe "A group of server types" do
     @type_group[type_name].service(new_service)
     @type_group[type_name].services.include?(new_service).should == true
   end
+
+  it "should include PortsMethods" do
+    pending
+  end
+
+  it "should include ServiceMethods" do
+    pending
+  end
+
+  it "should report downed ports" do
+    pending
+  end
+
+  it "should report downed services" do
+    pending
+  end
+
+  it "should report both downed services and ports when wrong() is called" do
+    pending
+  end
 end
