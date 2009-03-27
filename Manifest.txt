@@ -1,7 +1,14 @@
 History.txt
 Manifest.txt
-README.txt
+README.rdoc
 Rakefile
 bin/rubicante
 lib/rubicante.rb
+lib/rubicante/host.rb
+lib/rubicante/type.rb
+lib/rubicante/type_group.rb
+spec/helper.rb
+spec/host_spec.rb
+spec/type_group_spec.rb
+spec/type_spec.rb
 test/test_rubicante.rb
