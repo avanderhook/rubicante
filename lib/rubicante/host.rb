@@ -56,10 +56,7 @@ module Rubicante
     #   end
     def check_websites
       @websites.each do |website|
-        if not website.is_ok?
-          result = { :url => website.url, :code => website.response_code }
-          yield result
-        end
+        yield website.wrong?
       end
     end
   end

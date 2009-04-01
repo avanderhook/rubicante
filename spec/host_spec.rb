@@ -88,7 +88,7 @@ describe "A newtork host" do
     end
 
     my_host.check_websites do |result|
-      sites.include?(result[:url]).should == true
+      sites.include?(result.url).should == true
     end
   end
 end
