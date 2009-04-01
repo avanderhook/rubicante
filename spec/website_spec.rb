@@ -45,4 +45,9 @@ describe "A website" do
     Net::HTTP.stub!(:get_response).and_return(@http_client_error)
     @website.is_ok?.should == false
   end
+
+  it "should return a WebsiteError for bad sites" do
+    Net::HTTP.stub!(:get_response).and_return(@http_server_error)
+    @website.wrong?.should be_an_instance_of(Rubicante::WebsiteError)
+  end
 end
