@@ -1,4 +1,5 @@
 require 'rubicante/website'
+require 'rubicante/host_error'
 
 module Rubicante
   class Host
@@ -58,6 +59,16 @@ module Rubicante
       @websites.each do |website|
         yield website.wrong?
       end
+    end
+
+    def wrong?
+      result = HostError.new(@name)
+
+      check_websites do |website_error|
+        result.add(website_error)
+      end
+
+      return result
     end
   end
 end

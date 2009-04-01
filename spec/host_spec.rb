@@ -6,6 +6,17 @@ describe "A newtork host" do
     @host_name = "spec-host"
     @host = Rubicante::Host.new(@host_name)
 
+    @host_with_sites = Rubicante::Host.new(@host_name)
+    @sites = [
+      'www.rubicante-good-site.com',
+      'www.rubicante-bad-site.com',
+      'www.rubicante-worse-site.com',
+      'www.rubicante-redirect.com'
+    ]
+    @sites.each do |site|
+      @host_with_sites.website(site)
+    end
+
     Net::HTTP.stub!(:get_response).and_return(Net::HTTPServerError.new('1', '500', 'Internal Server Error'))
   end
 
@@ -75,20 +86,22 @@ describe "A newtork host" do
   end
 
   it "should check all websites" do
-    sites = [
-      'www.rubicante-good-site.com',
-      'www.rubicante-bad-site.com',
-      'www.rubicante-worse-site.com',
-      'www.rubicante-redirect.com'
-    ]
-
-    my_host = Rubicante::Host.new("new-host")
-    sites.each do |site|
-      my_host.website(site)
+    @host_with_sites.check_websites do |result|
+      @sites.include?(result.url).should == true
     end
+  end
 
-    my_host.check_websites do |result|
-      sites.include?(result.url).should == true
+  it "should return a HostError for wrong?" do
+    @host.wrong?.should be_an_instance_of(Rubicante::HostError)
+  end
+
+  it "should return website errors with the HostError" do
+    host_error = @host.wrong?
+
+    host_error.website_errors.should_not be_nil
+    host_error.website_errors.each do |website_error|
+      website_error.should be_an_instance_of(Rubicante::WebsiteError)
+      @sites.include?(website_error.url).should == true
     end
   end
 end
