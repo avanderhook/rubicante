@@ -1,0 +1,75 @@
+require File.join(File.expand_path(File.dirname(__FILE__)),"helper")
+require "#{LIB_DIR}/environment" 
+
+describe "A Rubicante environment" do
+  before :all do
+    Net::HTTP.stub!(:get_response).and_return(Net::HTTPServerError.new('1', '500', 'Internal Server Error'))
+  end
+
+  before :each do
+    @env = Rubicante::Environment.new
+  end
+
+  it "should exist" do
+    @env.should_not be_nil
+    @env.should be_an_instance_of(Rubicante::Environment)
+  end
+
+  it "should have a HostGroup" do
+    @env.host.should be_an_instance_of(Rubicante::HostGroup)
+  end
+
+  it "should have an empty HostGroup by default" do
+    @env.host.hosts.should == {}
+  end
+
+  it "should have a wrong? method" do
+    @env.respond_to?('wrong?').should == true
+  end
+
+  it "should return an array of HostErrors" do
+    @env.host['webserver'].website('http://www.rubicante-example.com/')
+    @env.host['intranet'].website('http://www.my-local-intranet.net/')
+
+    @env.wrong? do |result|
+      result.should be_an_instance_of(Array)
+      result[0].should be_an_instance_of(Rubicante::HostError)
+    end
+  end
+
+  it "should have an eval_host method" do
+    @env.respond_to?('eval_host').should == true
+  end
+
+  it "should handle 'Host webservice provides website ...'" do
+    hostname = 'webservice'
+    url = 'www.rubicante-example.com'
+    cmd = "Host #{hostname} provides website #{url}"
+    @env.eval_host(cmd)
+    @env.host[hostname].websites[0].url.should == url
+  end
+
+  it "should handle specifying multiple websites" do
+    hostname = 'www2'
+    url0 = 'test1'
+    url1 = 'test2'
+    cmd = "Host #{hostname} provides website #{url0}, provides website #{url1}"
+    @env.eval_host(cmd)
+    @env.host[hostname].websites[0].url.should == url0
+    @env.host[hostname].websites[1].url.should == url1
+  end
+
+  it "should have an eval_command method" do
+    pending
+  end
+
+  it "should handle 'host' commands" do
+    pending
+  end
+
+  after :all do
+    # Clean up the HostGroup instance's hash so that other specs will
+    # run properly
+    @env.host.hosts.clear
+  end
+end
