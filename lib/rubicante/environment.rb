@@ -45,9 +45,13 @@ module Rubicante
     end
 
     def wrong?
+      result = []
+
       host.hosts.keys.each do |key|
-        host[key].wrong?
+        result << host[key].wrong?
       end
+
+      return result
     end
     alias_method :wrong, :wrong?
   end
