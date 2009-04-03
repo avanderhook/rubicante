@@ -31,7 +31,7 @@ module Rubicante
       cmd.gsub!(/,/, '')    # clean up commas
       cmd.gsub!(/[\s]/, '') # clean up white space
 
-      eval cmd
+      instance_eval cmd
     end
 
     # Perform polish on a command starting with 'what' and
@@ -41,7 +41,7 @@ module Rubicante
       cmd.gsub!(/^[Ww]hat\s/, '')
       cmd.gsub!(/is\s/, '')
 
-      eval cmd
+      instance_eval cmd
     end
 
     def wrong?
