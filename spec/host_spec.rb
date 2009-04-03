@@ -18,6 +18,7 @@ describe "A newtork host" do
     end
 
     Net::HTTP.stub!(:get_response).and_return(Net::HTTPServerError.new('1', '500', 'Internal Server Error'))
+    Ping.stub!(:pingecho).and_return(true)
   end
 
   it "should exist" do
@@ -103,5 +104,27 @@ describe "A newtork host" do
       website_error.should be_an_instance_of(Rubicante::WebsiteError)
       @sites.include?(website_error.url).should == true
     end
+  end
+
+  it "should support pinging" do
+    @host.respond_to?('ping').should == true
+  end
+
+  it "should update HostError.ping to true for alive hosts" do
+    host_error = @host.wrong?
+    host_error.ping.should == true
+  end
+
+  it "should update HostError.ping to false for down hosts" do
+    Ping.stub!(:pingecho).and_return(false)
+    host_error = @host.wrong?
+    host_error.ping.should == false
+  end
+
+  it "should skip website processing for downed hosts" do
+    Ping.stub!(:pingecho).and_return(false)
+    host_error = @host_with_sites.wrong?
+    host_error.ping.should == false
+    host_error.website_errors.should == []
   end
 end

@@ -1,6 +1,8 @@
 require 'rubicante/website'
 require 'rubicante/host_error'
 
+require 'ping'
+
 module Rubicante
   class Host
     attr_reader :name
@@ -12,6 +14,10 @@ module Rubicante
       @services = []
       @types    = []
       @websites = []
+    end
+
+    def ping
+      Ping.pingecho @name
     end
 
     def port(port_number)
@@ -63,9 +69,13 @@ module Rubicante
 
     def wrong?
       result = HostError.new(@name)
+      result.ping = self.ping
 
-      check_websites do |website_error|
-        result.add(website_error)
+      # If the host is alive, continue testing
+      if result.ping
+        check_websites do |website_error|
+          result.add(website_error)
+        end
       end
 
       return result

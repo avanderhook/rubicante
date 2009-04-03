@@ -33,4 +33,19 @@ describe "An error with a host" do
     @host_error.add(@website_error)
     @host_error.website_errors.include?(@website_error).should == true
   end
+
+  it "should have an ping value" do
+    @host_error.respond_to?('ping').should == true
+  end
+
+  it "ping should be false by default" do
+    @host_error.ping.should == false
+  end
+
+  it "should allow changin the ping value" do
+    @new_ping = true
+    @host_error.ping.should_not == @new_ping
+    @host_error.ping = @new_ping
+    @host_error.ping.should == @new_ping
+  end
 end
