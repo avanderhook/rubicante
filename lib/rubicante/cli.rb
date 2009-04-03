@@ -22,11 +22,11 @@ module Rubicante
 
     def process(resp)
       if resp.kind_of? HostError
-        process_hosterror(resp)
+        process_host_error(resp)
       end
     end
 
-    def process_hosterror(resp)
+    def process_host_error(resp)
       if not resp.ping
         puts_error(resp.hostname, "is unreachable.")
       else
