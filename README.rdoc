@@ -31,6 +31,7 @@ checking on remote Windows services or remote registry calls.
 
 * Ruby 1.8+
 * logging (>= 0.9.7)
+* trollop (>= 1.13)
 
 == INSTALL:
 

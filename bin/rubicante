@@ -2,5 +2,19 @@
 
 require 'rubicante/cli'
 
-app = Rubicante::CLI.new
+require 'trollop'
+
+opts = Trollop::options do
+  banner <<-EOS
+A business natural language for Systems Administrators
+
+Usage:
+  rubicante [options]
+where [options] are:
+EOS
+  
+  opt :debug, "Turn debugging ON", :default => false
+end
+
+app = Rubicante::CLI.new(opts[:debug])
 app.run

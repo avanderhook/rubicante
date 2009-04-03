@@ -5,11 +5,11 @@ require 'logging'
 module Rubicante
   # A command-line interface for Rubicante
   class CLI
-    def initialize
+    def initialize(debug = false)
       # Set up the logger for this CLI session
       @log = Logging::Logger['rubicante']
       @log.add_appenders(Logging::Appender.stdout)
-      @log.level = :debug
+      @log.level = debug ? :debug : :info
 
       # Set up logger for Environment
       Logging::Appender['rubicante'] = Logging::Appender.stdout
