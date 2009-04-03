@@ -60,11 +60,15 @@ describe "A Rubicante environment" do
   end
 
   it "should have an eval_command method" do
-    pending
+    @env.respond_to?('eval_command').should == true
+  end
+
+  it "should raise a NotImplementedError for unknown commands" do
+    lambda { @env.eval_command('whumpus frumpus') }.should raise_error(NotImplementedError)
   end
 
   it "should handle 'host' commands" do
-    pending
+    lambda { @env.eval_command('host frank') }.should_not raise_error(NotImplementedError)
   end
 
   after :all do
