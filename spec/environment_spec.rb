@@ -71,6 +71,14 @@ describe "A Rubicante environment" do
     lambda { @env.eval_command('host frank') }.should_not raise_error(NotImplementedError)
   end
 
+  it "should have an eval_what method" do
+    @env.respond_to?('eval_what').should == true
+  end
+
+  it "should handle 'what' commands" do
+    lambda { @env.eval_command('What is wrong') }.should_not raise_error(NotImplementedError)
+  end
+
   after :all do
     # Clean up the HostGroup instance's hash so that other specs will
     # run properly

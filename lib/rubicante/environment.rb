@@ -34,10 +34,21 @@ module Rubicante
       eval cmd
     end
 
+    # Perform polish on a command starting with 'what' and
+    # evaluate it
+    def eval_what(cmd)
+      # Clean up some bubble words
+      cmd.gsub!(/^[Ww]hat\s/, '')
+      cmd.gsub!(/is\s/, '')
+
+      eval cmd
+    end
+
     def wrong?
       host.hosts do |host|
         yield host.wrong?
       end
     end
+    alias_method :wrong, :wrong?
   end
 end
