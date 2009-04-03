@@ -14,7 +14,11 @@ module Rubicante
     end
 
     def process_hosterror(resp)
-      process_website_errors(resp)
+      if not resp.ping
+        puts_error(resp.hostname, "is unreachable.")
+      else
+        process_website_errors(resp)
+      end
     end
 
     def process_website_errors(resp)
