@@ -1,9 +1,22 @@
 require 'rubicante/environment'
 
+require 'logging'
+
 module Rubicante
   # A command-line interface for Rubicante
   class CLI
     def initialize
+      # Set up the logger for this CLI session
+      @log = Logging::Logger['rubicante']
+      @log.add_appenders(Logging::Appender.stdout)
+      @log.level = :debug
+
+      # Set up logger for Environment
+      Logging::Appender['rubicante'] = Logging::Appender.stdout
+      Logging::Logger['Rubicante::Environment'].add_appenders(Logging::Appender['rubicante'])
+      Logging::Logger['Rubicante::Environment'].level = @log.level
+
+      # Prepare Environment
       @env = Environment.new
     end
 
@@ -28,7 +41,7 @@ module Rubicante
     end
 
     def puts_error(hostname, error)
-      puts "[#{hostname}] #{error}"
+      @log.info "[#{hostname}] #{error}"
     end
 
     def run
@@ -42,7 +55,7 @@ module Rubicante
         begin
           result = @env.eval_command(cmd)
         rescue NotImplementedError
-          puts "Unrecognized command '#{cmd.split[0]}'."
+          @log.error "Unrecognized command '#{cmd.split[0]}'."
         end
 
         # 'what' commands return Arrays

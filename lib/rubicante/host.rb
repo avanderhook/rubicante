@@ -1,6 +1,7 @@
 require 'rubicante/website'
 require 'rubicante/host_error'
 
+require 'logging'
 require 'ping'
 
 module Rubicante
@@ -14,9 +15,17 @@ module Rubicante
       @services = []
       @types    = []
       @websites = []
+
+      @log = Logging::Logger[self]
+
+      # Prepare Website logger
+      @appender = Logging::Appender['rubicante']
+      Logging::Logger['Rubicante::Website'].add_appenders(Logging::Appender['rubicante']) if not @appender.nil?
+      Logging::Logger['Rubicante::Website'].level = @log.level
     end
 
     def ping
+      @log.debug "Performing TCP echo ping on host '#{@name}'"
       Ping.pingecho @name
     end
 
@@ -62,12 +71,14 @@ module Rubicante
     #     puts "Website #{result[:url]} failed with code #{result[:code]}!"
     #   end
     def check_websites
+      @log.debug "Checking websites registered to host '#{@name}'"
       @websites.each do |website|
         yield website.wrong?
       end
     end
 
     def wrong?
+      @log.debug "Determing what is wrong with host '#{@name}'"
       result = HostError.new(@name)
       result.ping = self.ping
 

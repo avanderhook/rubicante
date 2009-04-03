@@ -1,5 +1,7 @@
-require 'net/http'
 require 'rubicante/website_error'
+
+require 'logging'
+require 'net/http'
 
 module Rubicante
   class Website
@@ -7,6 +9,8 @@ module Rubicante
     
     def initialize(url)
       @url = url
+
+      @log = Logging::Logger[self]
     end
 
     # Determines whether or not the site OK based on the HTTP Status code
@@ -31,12 +35,14 @@ module Rubicante
     # Performs and HTTP GET on the URL's root ('/') and returns the
     # HTTP Status code
     def response_code
+      @log.debug "Retreiving HTTP Code for website '#{@url}'"
       Net::HTTP.get_response(@url, '/').code
     end
 
     # Checks to see if the site is OK.  If it is not, it returns
     # a Rubicante::WebsiteError
     def wrong?
+      @log.debug "Checking website '#{@url}' for problems"
       if not self.is_ok?
         WebsiteError.new(@url, self.response_code)
       end
