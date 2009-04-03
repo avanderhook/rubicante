@@ -13,12 +13,15 @@ and receive answers.
 
 == FEATURES/PROBLEMS:
 
+NOTE: Some features are dependent upon running on the Windows platform--for instance,
+checking on remote Windows services or remote registry calls.
+
 * Describe a network of computer systems
 	* Hosts
-		* Critical ports
+		* Is the host alive?
 		* Critical web sites hosted
 * Query the network
-	* What is wrong: returns items (hosts, ports, websites) that are not functioning
+	* What is wrong: returns items (hosts, websites) that are not functioning
 
 == SYNOPSIS:
 
@@ -27,8 +30,7 @@ and receive answers.
 == REQUIREMENTS:
 
 * Ruby 1.8+
-* Windows system for Windows-specific functions:
-	* Windows services
+* logging (>= 0.9.7)
 
 == INSTALL:
 
