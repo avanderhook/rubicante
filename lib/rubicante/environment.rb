@@ -45,8 +45,8 @@ module Rubicante
     end
 
     def wrong?
-      host.hosts do |host|
-        yield host.wrong?
+      host.hosts.keys.each do |key|
+        host[key].wrong?
       end
     end
     alias_method :wrong, :wrong?

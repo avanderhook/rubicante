@@ -28,9 +28,6 @@ describe "A Rubicante environment" do
   end
 
   it "should return an array of HostErrors" do
-    @env.host['webserver'].website('http://www.rubicante-example.com/')
-    @env.host['intranet'].website('http://www.my-local-intranet.net/')
-
     @env.wrong? do |result|
       result.should be_an_instance_of(Array)
       result[0].should be_an_instance_of(Rubicante::HostError)
@@ -79,7 +76,7 @@ describe "A Rubicante environment" do
     lambda { @env.eval_command('What is wrong') }.should_not raise_error(NotImplementedError)
   end
 
-  after :all do
+  after :each do
     # Clean up the HostGroup instance's hash so that other specs will
     # run properly
     @env.host.hosts.clear
