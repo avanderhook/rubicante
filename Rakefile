@@ -5,7 +5,7 @@ require 'hoe'
 require './lib/rubicante.rb'
 
 Hoe.new('rubicante', Rubicante::VERSION) do |p|
-  # p.rubyforge_name = 'rubicantex' # if different than lowercase project name
+  p.remote_rdoc_dir = '' # Release to root
   p.developer('Adam VanderHook', 'avanderhook@gmail.com')
   p.extra_deps << ['logging', '>= 0.9.7']
   p.extra_deps << ['trollop', '>= 1.13']
