@@ -30,7 +30,14 @@ module Rubicante
       if not resp.ping
         puts_error(resp.hostname, "is unreachable.")
       else
+        process_port_errors(resp)
         process_website_errors(resp)
+      end
+    end
+
+    def process_port_errors(resp)
+      resp.bad_ports.each do |bad_port|
+        puts_error(resp.hostname, "port #{bad_port} is closed.")
       end
     end
 
