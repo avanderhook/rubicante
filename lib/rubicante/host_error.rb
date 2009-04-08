@@ -3,12 +3,13 @@ require 'rubicante/website_error'
 module Rubicante
   class HostError
     attr_reader :hostname, :website_errors
-    attr_accessor :ping
+    attr_accessor :bad_ports, :ping
 
     def initialize(hostname)
       @hostname = hostname
       @ping = false
-      @website_errors  = []
+      @bad_ports      = []
+      @website_errors = []
     end
 
     def add(error)

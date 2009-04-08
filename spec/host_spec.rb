@@ -17,6 +17,12 @@ describe "A newtork host" do
       @host_with_sites.website(site)
     end
 
+    @host_with_ports = Rubicante::Host.new(@host_name)
+    @ports = [80, 22, 443]
+    @ports.each do |port|
+      @host_with_ports.port(port)
+    end
+
     Net::HTTP.stub!(:get_response).and_return(Net::HTTPServerError.new('1', '500', 'Internal Server Error'))
     Ping.stub!(:pingecho).and_return(true)
   end
@@ -126,5 +132,28 @@ describe "A newtork host" do
     host_error = @host_with_sites.wrong?
     host_error.ping.should == false
     host_error.website_errors.should == []
+  end
+
+  it "should check a specified port" do
+    @host.respond_to?('check_port').should == true
+    TCPSocket.stub!(:open).and_return(true)
+    @host.check_port(80).should == true
+    TCPSocket.stub!(:open).and_raise(ArgumentError)
+    @host.check_port(443).should == false
+  end
+
+  it "should check all registered ports" do
+    TCPSocket.stub!(:open).and_raise(ArgumentError)
+    @host_with_ports.check_ports do |port, is_alive|
+      @ports.include?(port).should == true
+    end
+  end
+
+  it "should update HostError.bad_ports for all down ports" do
+    TCPSocket.stub!(:open).and_raise(ArgumentError)
+    host_error = @host_with_ports.wrong?
+    host_error.bad_ports.each do |bad_port|
+      @ports.include?(bad_port).should == true
+    end
   end
 end

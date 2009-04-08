@@ -48,4 +48,14 @@ describe "An error with a host" do
     @host_error.ping = @new_ping
     @host_error.ping.should == @new_ping
   end
+
+  it "should have an empty array of bad_ports by default" do
+    @host_error.bad_ports.should == []
+  end
+
+  it "should allow appending to bad_ports" do
+    @new_bad_port = 80
+    @host_error.bad_ports << 80
+    @host_error.bad_ports.include?(@new_bad_port).should == true
+  end
 end

@@ -3,6 +3,7 @@ require 'rubicante/host_error'
 
 require 'logging'
 require 'ping'
+require 'socket'
 
 module Rubicante
   class Host
@@ -49,8 +50,48 @@ module Rubicante
       self
     end
 
+    # Check if the specified port is active by connecting to it
+    def check_port(port)
+      port_output = "#{@name}:#{port}"
+
+      @log.debug "Checking port #{port_output}..."
+
+      begin
+        test = TCPSocket.open(@name, port)
+        @log.debug "Port #{port_output} looks good"
+        return true # if we get here, the socket opened
+      rescue
+        @log.debug "Port #{port_output} raised an exception when opening"
+        return false  # if we get here, there are problems with the port
+      end
+    end
+
+    # Iterates through all the ports in the Host and runs check_port(port)
+    # against them.
+    #
+    # == Yields: port, is_alive
+    #
+    # Each registered port is yielded along with the boolean result from
+    # check_port(port).
+    #
+    # == Example:
+    #
+    #   host = Rubicante::Host.new("test-host")
+    #   host.port(80)
+    #   host.port(443)
+    #
+    #   host.check_ports do |port, response|
+    #     puts "Port #{port} is UP" if response
+    #     puts "Port #{port} is DOWN" if not response
+    #   end
+    def check_ports
+      @ports.each do |port|
+        yield port, check_port(port)
+      end
+    end
+
     # Iterates through all the websites in the Host and runs
-    # is_ok? against them looking for problems.  If a problem is
+    # wrong? against them looking for problems.  If a problem is
     # found, a Hash of the URL and the HTTP Status code is yielded.
     #
     # == Yields: a Hash
@@ -67,7 +108,7 @@ module Rubicante
     #   host.website('www.rubicante.com')
     #   host.website('www.openbsd.org')
     #
-    #   host.check_websites |result|
+    #   host.check_websites do |result|
     #     puts "Website #{result[:url]} failed with code #{result[:code]}!"
     #   end
     def check_websites
@@ -84,6 +125,10 @@ module Rubicante
 
       # If the host is alive, continue testing
       if result.ping
+        check_ports do |port, response|
+          result.bad_ports << port if not response
+        end
+
         check_websites do |website_error|
           result.add(website_error)
         end
