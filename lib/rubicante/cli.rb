@@ -44,26 +44,38 @@ module Rubicante
       @log.info "[#{hostname}] #{error}"
     end
 
+    # Load in a file, executing each line
+    def load(file)
+      cmds = File.new(file)
+      cmds.each_line { |cmd| handle(cmd) }
+    end
+
+    # Handles sending the command to the Environment and dealing
+    # with any return values that require output to the user
+    def handle(cmd)
+      exit if cmd == "exit"
+
+      begin
+        result = @env.eval_command(cmd)
+      rescue NotImplementedError
+        @log.error "Unrecognized command '#{cmd.split[0]}'."
+      end
+
+      # 'what' commands return Arrays
+      if result.kind_of? Array
+        result.each do |response|
+          process(response)
+        end
+      end
+    end
+
     def run
       while true do
         print 'rubicante> '
 
         cmd = gets.downcase.strip
 
-        exit if cmd == "exit"
-
-        begin
-          result = @env.eval_command(cmd)
-        rescue NotImplementedError
-          @log.error "Unrecognized command '#{cmd.split[0]}'."
-        end
-
-        # 'what' commands return Arrays
-        if result.kind_of? Array
-          result.each do |response|
-            process(response)
-          end
-        end
+        handle(cmd)
       end
     end
   end

@@ -29,14 +29,17 @@ module Rubicante
 
       result = true if response_code.match(/^(2|3)/)
 
-      result
+      return result
     end
 
     # Performs and HTTP GET on the URL's root ('/') and returns the
     # HTTP Status code
     def response_code
       @log.debug "Retreiving HTTP Code for website '#{@url}'"
-      Net::HTTP.get_response(@url, '/').code
+      result = Net::HTTP.get_response(@url, '/').code
+      @log.debug "Received HTTP Code #{result} for website '#{@url}'"
+
+      return result
     end
 
     # Checks to see if the site is OK.  If it is not, it returns

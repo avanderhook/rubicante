@@ -13,8 +13,16 @@ Usage:
 where [options] are:
 EOS
   
+  opt :cron,  "Turn cron mode ON", :default => false
   opt :debug, "Turn debugging ON", :default => false
+  opt :read,  "Read in and process a file", :type => :string
 end
 
+# Create the CLI interface with requested debug options
 app = Rubicante::CLI.new(opts[:debug])
-app.run
+
+# If requested, load in the specified file
+app.load(opts[:read]) if opts[:read]
+
+# Display the command line unless cron mode has been turned on
+app.run if not opts[:cron]
