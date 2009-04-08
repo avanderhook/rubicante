@@ -1,3 +1,7 @@
-=== 0.0.1 / 2009-03-25
+=== 0.0.1 / 2009-04-08
 
-* A work in progress...
+* Initial alpha release
+* Support adding hosts with
+  * ports
+  * websites
+* Report 'what is wrong'
