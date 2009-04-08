@@ -13,19 +13,83 @@ and receive answers.
 
 == FEATURES/PROBLEMS:
 
-NOTE: Some features are dependent upon running on the Windows platform--for instance,
-checking on remote Windows services or remote registry calls.
-
 * Describe a network of computer systems
-	* Hosts
-		* Is the host alive?
-		* Critical web sites hosted
+  * Hosts
+    * Ports it should be listening on
+    * Critical web sites hosted
 * Query the network
 	* What is wrong: returns items (hosts, websites) that are not functioning
 
 == SYNOPSIS:
 
-  FIX (code is still in development and usage isn't available)
+There are several ways that you can run Rubicante:
+* An interactive shell
+* An interactive shell with source file
+* Cron mode
+* All of the above in DEBUG mode
+
+=== Interactive Shell:
+
+Interactive shell mode allows you to specify hosts and run Rubicante queries against them.
+
+  $ rubicante
+  rubicante> Host webserver provides website www.my-intranet.com
+  rubicante> Host webserver provides website www.good-website.com, website www.bad-website.com
+  rubicante> What is wrong?
+  [webserver] is returning code 500 for website www.bad-website.com
+
+=== Interactive Shell with Source File
+
+Interactive shell mode with files allows you to define your network's resources
+in a file, load them in to rubicante, and obtain the interactive shell prompt
+so you can use Rubicante queries to examine the network.
+
+  $ cat 'my-network.bnl'
+  Host webserver listens on port 80, provides website www.example.com
+  Host shellserver listens on port 22
+  $ rubicante -r my-network.bnl
+  rubicante> What is wrong?
+  [shellserver] port 22 is closed.
+
+=== Cron Mode
+
+Cron mode reads in the specified file and then asks Rubicante
+"what is wrong?".  Any problems discovered will be logged to STDOUT
+(making this ideal for calling periodically with cron), and then exiting.
+
+  $ cat 'my-network.bnl'
+  host web1 website www.mycompany.com
+  host web2 website intranet.mycompany.com
+  host web3 website wiki.mycompnay.com
+  $ rubicante -c my-network.bnl
+  [web2] is returning code 500 for website intranet.mycompany.com
+  $
+
+=== DEBUG mode
+
+Use the '-d' flag when executing Rubicante to obtain debug output.
+
+== BASIC LANGUAGE SPECIFICATION:
+
+=== Conventions used
+* <parameter> is a required parameter
+* [optional] is an optional work (i.e., a "bubble" word for readability)
+
+=== HOST language
+
+* Host <hostname> [provides] website <fqdn>
+  * Defines host <hostname> (if not previously defined) and registers the website a <fqdn> with it
+  * i.e, "host www provides website www.example.com
+* Host <hostname> [listens] [on] port <port #>
+  * Defined host <hostname> (if not previously defined) and registers the port <port #> to it
+  * Example: "host www listens on port 80"
+* COMBINE HOST SUBCOMMANDS IN ONE LINE
+  * Example: "host www listens on port 80, port 443, provides website www.mycompany.com, website intranet.mycompany.com
+
+=== WHAT language
+
+* What [is] wrong[?]
+  * checks all defined hosts for problems and reports them
 
 == REQUIREMENTS:
 
