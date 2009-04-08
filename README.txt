@@ -73,18 +73,21 @@ Use the '-d' flag when executing Rubicante to obtain debug output.
 
 === Conventions used
 * <parameter> is a required parameter
-* [optional] is an optional work (i.e., a "bubble" word for readability)
+* [optional] is an optional word (i.e., a "bubble" word for readability)
 
 === HOST language
 
 * Host <hostname> [provides] website <fqdn>
   * Defines host <hostname> (if not previously defined) and registers the website a <fqdn> with it
-  * i.e, "host www provides website www.example.com
+  * Example:
+  "host www provides website www.example.com
 * Host <hostname> [listens] [on] port <port #>
   * Defined host <hostname> (if not previously defined) and registers the port <port #> to it
-  * Example: "host www listens on port 80"
+  * Example:
+  "host www listens on port 80"
 * COMBINE HOST SUBCOMMANDS IN ONE LINE
-  * Example: "host www listens on port 80, port 443, provides website www.mycompany.com, website intranet.mycompany.com
+  * Example:
+  "host www listens on port 80, port 443, provides website www.mycompany.com, website intranet.mycompany.com
 
 === WHAT language
 
