@@ -13,7 +13,7 @@ Usage:
 where [options] are:
 EOS
   
-  opt :cron,  "Turn cron mode ON", :default => false
+  opt :cron,  "Check the network described in the specified file and exit", :type => :string
   opt :debug, "Turn debugging ON", :default => false
   opt :read,  "Read in and process a file", :type => :string
 end
@@ -23,6 +23,12 @@ app = Rubicante::CLI.new(opts[:debug])
 
 # If requested, load in the specified file
 app.load(opts[:read]) if opts[:read]
+
+# Validate the current network if cron mode is used
+if opts[:cron]
+  app.load opts[:cron]
+  app.handle("what wrong")
+end
 
 # Display the command line unless cron mode has been turned on
 app.run if not opts[:cron]
