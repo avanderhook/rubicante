@@ -18,7 +18,7 @@ and receive answers.
     * Ports it should be listening on
     * Critical web sites hosted
 * Query the network
-    * What is wrong: returns items (hosts, websites) that are not functioning
+  * What is wrong: returns items (hosts, websites) that are not functioning
 
 == SYNOPSIS:
 
