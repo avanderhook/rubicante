@@ -80,14 +80,14 @@ Use the '-d' flag when executing Rubicante to obtain debug output.
 * Host <hostname> [provides] website <fqdn>
   * Defines host <hostname> (if not previously defined) and registers the website a <fqdn> with it
   * Example:
-  "host www provides website www.example.com
+	host www provides website www.example.com
 * Host <hostname> [listens] [on] port <port #>
   * Defined host <hostname> (if not previously defined) and registers the port <port #> to it
   * Example:
-  "host www listens on port 80"
+	host www listens on port 80"
 * COMBINE HOST SUBCOMMANDS IN ONE LINE
   * Example:
-  "host www listens on port 80, port 443, provides website www.mycompany.com, website intranet.mycompany.com
+	host www listens on port 80, port 443, provides website www.mycompany.com, website intranet.mycompany.com
 
 === WHAT language
 
