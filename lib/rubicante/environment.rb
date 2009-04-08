@@ -38,8 +38,10 @@ module Rubicante
       @log.debug "Polishing 'host' command"
       cmd.gsub!(/^[Hh]ost\s([\S]+)\s/, 'host["\1"]')
       cmd.gsub!(/website\s([^,]+)/, '.website("\1")')
+      cmd.gsub!(/port\s([^,]+)/, '.port(\1)')
 
       # Clean up some bubble words
+      cmd.gsub!(/listens\son\s/, '')
       cmd.gsub!(/provides\s/, '')
       cmd.gsub!(/,/, '')    # clean up commas
       cmd.gsub!(/[\s]/, '') # clean up white space
