@@ -58,11 +58,11 @@ Cron mode reads in the specified file and then asks Rubicante
 "what is wrong?".  Any problems discovered will be logged to STDOUT
 (making this ideal for calling periodically with cron), and then exiting.
 
-  $ <b>cat 'my-network.bnl'</b>
+  $ cat 'my-network.bnl'
   host web1 website www.mycompany.com
   host web2 website intranet.mycompany.com
   host web3 website wiki.mycompnay.com
-  $ <b>rubicante -c my-network.bnl</b>
+  $ rubicante -c my-network.bnl
   [web2] is returning code 500 for website intranet.mycompany.com
   $
 
