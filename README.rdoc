@@ -16,6 +16,7 @@ and receive answers.
 * Describe a network of computer systems
   * Hosts
     * Ports it should be listening on
+	* Win32 services provided
     * Critical web sites hosted
 * Query the network
   * What is wrong: returns items (hosts, websites) that are not functioning
@@ -57,11 +58,11 @@ Cron mode reads in the specified file and then asks Rubicante
 "what is wrong?".  Any problems discovered will be logged to STDOUT
 (making this ideal for calling periodically with cron), and then exiting.
 
-  $ cat 'my-network.bnl'
+  $ <b>cat 'my-network.bnl'</b>
   host web1 website www.mycompany.com
   host web2 website intranet.mycompany.com
   host web3 website wiki.mycompnay.com
-  $ rubicante -c my-network.bnl
+  $ <b>rubicante -c my-network.bnl</b>
   [web2] is returning code 500 for website intranet.mycompany.com
   $
 
@@ -81,6 +82,10 @@ Use the '-d' flag when executing Rubicante to obtain debug output.
   * Defines host <hostname> (if not previously defined) and registers the website a <fqdn> with it
   * Example:
 	host www provides website www.example.com
+* Host <hostname> [provides] service <win32 service name>
+  * Defined host <hostname> (if not previously defined) and registers the Win32 service name with it
+  * Example:
+    host sql provides service MSSQLSERVER
 * Host <hostname> [listens] [on] port <port #>
   * Defined host <hostname> (if not previously defined) and registers the port <port #> to it
   * Example:
