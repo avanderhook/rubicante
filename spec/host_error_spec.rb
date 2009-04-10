@@ -60,12 +60,10 @@ describe "An error with a host" do
   end
 
   it "should have an empty array of bad_services by default" do
-    pending
     @host_error.bad_services.should == []
   end
 
   it "should allow appending to bad_services" do
-    pending
     new_bad_service = 'W32Time'
     @host_error.bad_services << new_bad_service
     @host_error.bad_services.include?(new_bad_service).should == true
