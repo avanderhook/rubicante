@@ -1,15 +1,24 @@
 require 'rubicante/host_group'
+require 'os_functions'
 
 require 'logging'
 
 module Rubicante
   class Environment
+    include OsFunctions
+
     attr_accessor :host
 
     def initialize
       @host = HostGroup.instance
 
       @log = Logging::Logger[self]
+
+      if is_windows?
+        @log.debug "Detected base operating platform is Windows-based"
+      else
+        @log.debug "Detected base operating platform is NON Windows-based"
+      end
 
       # Prepare Host logger
       @appender = Logging::Appender['rubicante']
