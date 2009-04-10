@@ -54,8 +54,20 @@ describe "An error with a host" do
   end
 
   it "should allow appending to bad_ports" do
-    @new_bad_port = 80
-    @host_error.bad_ports << 80
-    @host_error.bad_ports.include?(@new_bad_port).should == true
+    new_bad_port = 80
+    @host_error.bad_ports << new_bad_port
+    @host_error.bad_ports.include?(new_bad_port).should == true
+  end
+
+  it "should have an empty array of bad_services by default" do
+    pending
+    @host_error.bad_services.should == []
+  end
+
+  it "should allow appending to bad_services" do
+    pending
+    new_bad_service = 'W32Time'
+    @host_error.bad_services << new_bad_service
+    @host_error.bad_services.include?(new_bad_service).should == true
   end
 end

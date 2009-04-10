@@ -5,8 +5,14 @@ require 'logging'
 require 'ping'
 require 'socket'
 
+require 'os_functions'
+include OsFunctions
+require 'win32ole' if is_windows?
+
 module Rubicante
   class Host
+    include OsFunctions
+
     attr_reader :name
     attr_accessor :ports, :services, :types, :websites
 
@@ -132,9 +138,46 @@ module Rubicante
         check_websites do |website_error|
           result.add(website_error)
         end
+
+        if is_windows?
+          check_services do |service, response|
+            result.bad_services << service if not response
+          end
+        end
       end
 
       return result
+    end
+
+    ###
+    # Windows-specific functions
+    ###
+    if is_windows?
+      def get_wmi
+        WIN32OLE.connect("winmgmts://#{@name}")
+      end
+
+      # Checks the host to see if the specified service is running
+      def is_running?(service)
+        query = "SELECT Name, State FROM Win32_Service WHERE Name='#{service}'"
+
+        result = false
+        service_label = "#{@name}->#{service}"
+
+        @log.debug "Checking services #{service_label}..."
+        get_wmi.ExecQuery(query).each do |result|
+          @log.debug "#{service_label}.State == #{result.State}"
+          result = true if result.State = 'Running'
+        end
+
+        return result
+      end
+
+      def check_services
+        @services.each do |service|
+          yield service, is_running?(service)
+        end
+      end
     end
   end
 end

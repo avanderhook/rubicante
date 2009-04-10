@@ -48,6 +48,7 @@ module Rubicante
       cmd.gsub!(/^[Hh]ost\s([\S]+)\s/, 'host["\1"]')
       cmd.gsub!(/website\s([^,]+)/, '.website("\1")')
       cmd.gsub!(/port\s([^,]+)/, '.port(\1)')
+      cmd.gsub!(/service\s([^,]+)/, '.service("\1")')
 
       # Clean up some bubble words
       cmd.gsub!(/listens\son\s/, '')
