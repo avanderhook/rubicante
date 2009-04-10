@@ -1,3 +1,7 @@
+=== 0.0.4 / 200-04-10
+
+* More gem manifest fixes
+
 === 0.0.3 / 2009-04-10
 
 * Fix broken gem
