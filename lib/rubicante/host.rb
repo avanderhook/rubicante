@@ -159,7 +159,7 @@ module Rubicante
 
       # Checks the host to see if the specified service is running
       def is_running?(service)
-        query = "SELECT Name, State FROM Win32_Service WHERE Name='#{service}'"
+        query = "SELECT Name, State FROM Win32_Service WHERE Name='#{service}' AND State='Running'"
 
         result = false
         service_label = "#{@name}->#{service}"
