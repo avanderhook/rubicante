@@ -1,4 +1,8 @@
-=== 0.0.4 / 200-04-10
+=== 0.0.5 / 2009-04-17
+
+* Fixed a bug where Windows services that were registered on a host but were not running were not reported as a problem
+
+=== 0.0.4 / 2009-04-10
 
 * More gem manifest fixes
 
