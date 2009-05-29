@@ -7,14 +7,13 @@ module Rubicante
   class CLI
     def initialize(debug = false)
       # Set up the logger for this CLI session
-      @log = Logging::Logger['rubicante']
-      @log.add_appenders(Logging::Appender.stdout)
+      @log = Logging.logger['rubicante']
+      @log.add_appenders(Logging.appenders.stdout)
       @log.level = debug ? :debug : :info
 
       # Set up logger for Environment
-      Logging::Appender['rubicante'] = Logging::Appender.stdout
-      Logging::Logger['Rubicante::Environment'].add_appenders(Logging::Appender['rubicante'])
-      Logging::Logger['Rubicante::Environment'].level = @log.level
+      Logging.logger['Rubicante::Environment'].add_appenders(Logging.appenders.stdout)
+      Logging.logger['Rubicante::Environment'].level = @log.level
 
       # Prepare Environment
       @env = Environment.new

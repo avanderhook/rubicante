@@ -23,12 +23,12 @@ module Rubicante
       @types    = []
       @websites = []
 
-      @log = Logging::Logger[self]
+      @log = Logging.logger[self]
 
       # Prepare Website logger
-      @appender = Logging::Appender['rubicante']
-      Logging::Logger['Rubicante::Website'].add_appenders(Logging::Appender['rubicante']) if not @appender.nil?
-      Logging::Logger['Rubicante::Website'].level = @log.level
+      @appender = Logging.logger['rubicante']
+      Logging.logger['Rubicante::Website'].add_appenders(Logging.appenders.stdout) if not @appender.nil?
+      Logging.logger['Rubicante::Website'].level = @log.level
     end
 
     def ping

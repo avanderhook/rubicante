@@ -10,7 +10,7 @@ module Rubicante
     def initialize(url)
       @url = url
 
-      @log = Logging::Logger[self]
+      @log = Logging.logger[self]
     end
 
     # Determines whether or not the site OK based on the HTTP Status code
