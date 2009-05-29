@@ -1,3 +1,7 @@
+=== 0.0.6 / 2009-5-29
+
+* Works with the latest version of the Logging gem
+
 === 0.0.5 / 2009-04-17
 
 * Fixed a bug where Windows services that were registered on a host but were not running were not reported as a problem
