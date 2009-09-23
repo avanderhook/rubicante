@@ -89,7 +89,7 @@ Use the '-d' flag when executing Rubicante to obtain debug output.
 * Host <hostname> [listens] [on] port <port #>
   * Defined host <hostname> (if not previously defined) and registers the port <port #> to it
   * Example:
-	host www listens on port 80"
+	host www listens on port 80
 * COMBINE HOST SUBCOMMANDS IN ONE LINE
   * Example:
 	host www listens on port 80, port 443, provides website www.mycompany.com, website intranet.mycompany.com
@@ -98,6 +98,15 @@ Use the '-d' flag when executing Rubicante to obtain debug output.
 
 * What [is] wrong[?]
   * checks all defined hosts for problems and reports them
+
+=== COMMENTS
+
+* Comments can be inserted using the hash (#) character
+* Example:
+	# this is a comment before a command
+	host www listens on port 8081
+	# this is a comment after a command
+	# and another one for good measure
 
 == REQUIREMENTS:
 
