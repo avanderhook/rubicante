@@ -37,7 +37,7 @@ module Rubicante
       if self.respond_to?(cmd_root)
         self.send(cmd_root, cmd)
       else
-        raise NotImplementedError
+        raise NotImplementedError if not cmd_root == 'eval_#'
       end
     end
 
