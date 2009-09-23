@@ -1,7 +1,7 @@
 = rubicante
 
-* RubyForge http://rubicante.rubyforge.org/
-* GitHub http://github.com/avanderhook/rubicante/
+* RubyForge: rubicante.rubyforge.org
+* GitHub: github.com/avanderhook/rubicante
 
 == DESCRIPTION:
 
