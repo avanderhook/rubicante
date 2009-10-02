@@ -1,5 +1,4 @@
 require 'rubicante/environment'
-require 'rubicante/default_appender'
 
 require 'logging'
 
