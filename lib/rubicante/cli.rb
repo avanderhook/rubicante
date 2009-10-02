@@ -59,8 +59,14 @@ module Rubicante
 
     # Load in a file, executing each line
     def load(file)
-      cmds = File.new(file)
-      cmds.each_line { |cmd| handle(cmd) }
+      @log.debug "Checking for file: #{file}..."
+
+      if File.exist?(file)
+        cmds = File.new(file)
+        cmds.each_line { |cmd| handle(cmd) }
+      else
+        @log.error "File #{file} cannot be found."
+      end
     end
 
     # Handles sending the command to the Environment and dealing
