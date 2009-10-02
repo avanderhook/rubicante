@@ -81,6 +81,10 @@ describe "A Rubicante environment" do
     lambda { @env.eval_command('#this is also a comment') }.should_not raise_error(NotImplementedError)
   end
 
+  it "should handle empty lines" do
+    lambda { @env.eval_command(nil) }.should_not raise_error(NoMethodError)
+  end
+
   after :each do
     # Clean up the HostGroup instance's hash so that other specs will
     # run properly

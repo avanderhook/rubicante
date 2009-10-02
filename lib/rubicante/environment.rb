@@ -33,7 +33,7 @@ module Rubicante
 
       if cmd =~ /^[#]/
         @log.debug "Determined command to be a comment, skipping"
-      else
+      else if not cmd == nil
         cmd_root = 'eval_' + cmd.split[0].downcase
         @log.debug "Determined command root to be: #{cmd_root}"
 
