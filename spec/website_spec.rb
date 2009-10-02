@@ -3,8 +3,11 @@ require "#{LIB_DIR}/website"
 
 describe "A website" do
   before :each do
-    @url = 'http://www.rubicante-test.com/'
-    @website = Rubicante::Website.new(@url)
+    @fqdn = 'www.rubicante-test.com'
+    @path = '/download/current/now/2'
+    @url = "#{@fqdn}#{@path}"
+
+    @website = Rubicante::Website.new("http://#{@url}")
 
     @http_ok           = Net::HTTPOK.new('1', '200', 'OK')
     @http_redirect     = Net::HTTPMovedPermanently.new('1', '301', 'Moved Permanently')
@@ -15,6 +18,18 @@ describe "A website" do
   it "should exist" do
     @website.should_not be_nil
     @website.should be_an_instance_of(Rubicante::Website)
+  end
+
+  it "should parse out the FQDN" do
+    @website.fqdn.should == @fqdn
+  end
+
+  it "should parse out the path" do
+    @website.path.should == @path
+  end
+
+  it "should have reassembeld the URL internally" do
+    @website.url.should == @url
   end
 
   it "should require a name parameter for initialization" do
@@ -49,5 +64,9 @@ describe "A website" do
   it "should return a WebsiteError for bad sites" do
     Net::HTTP.stub!(:get_response).and_return(@http_server_error)
     @website.wrong?.should be_an_instance_of(Rubicante::WebsiteError)
+  end
+
+  it "should handle checking invalid URLs gracefully" do
+    pending
   end
 end

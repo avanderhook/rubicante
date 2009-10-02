@@ -5,12 +5,23 @@ require 'net/http'
 
 module Rubicante
   class Website
-    attr_reader :url
+    attr_reader :fqdn, :path, :url
     
     def initialize(url)
-      @url = url
-
       @log = Logging.logger[self]
+
+      @log.warn "Recieved HTTPS (TCP/443) URL. This version of Rubicante will only check HTTP (TCP/80) when the check is run" if url =~ /^https/
+
+      url.gsub!(/^http[s]?:\/\//, '')   # strip http or https :// off of the front of the URL
+
+      url_parts = url.split('/')        # break the URL down into an array of FQDN and path element
+      @fqdn = url_parts.slice!(0)       # slice off the first item, which is the FQDN
+      @log.debug "Determined website's FQDN to be '#{@fqdn}'"
+
+      @path = '/' + url_parts.join('/') # join remaining elements to create the path (path will always be at least '/')
+      @log.debug "Determined website's path to be '#{@path}'"
+
+      @url = @fqdn + @path
     end
 
     # Determines whether or not the site OK based on the HTTP Status code
@@ -36,8 +47,14 @@ module Rubicante
     # HTTP Status code
     def response_code
       @log.debug "Retreiving HTTP Code for website '#{@url}'"
-      result = Net::HTTP.get_response(@url, '/').code
-      @log.debug "Received HTTP Code #{result} for website '#{@url}'"
+
+      begin
+        result = Net::HTTP.get_response(@fqdn, @path).code
+        @log.debug "Received HTTP Code #{result} for website '#{@url}'"
+      rescue SocketError
+        @log.error "Communication problem with '#{@fqdn}'--possibly a DNS error.  Cannot check status!"
+        result = "200"
+      end
 
       return result
     end
