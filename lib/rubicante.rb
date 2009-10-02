@@ -1,6 +1,3 @@
-#require 'rubicante/type'
-#require 'rubicante/type_group'
-
 class Rubicante
-  VERSION = 'CURRENT'
+  VERSION = '0.0.8'
 end
