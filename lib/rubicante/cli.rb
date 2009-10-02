@@ -1,4 +1,5 @@
 require 'rubicante/environment'
+require 'rubicante/default_appender'
 
 require 'logging'
 
@@ -8,7 +9,16 @@ module Rubicante
     def initialize(debug = false)
       # Set up the logger for this CLI session
       @log = Logging.logger['rubicante']
-      @log.add_appenders(Logging.appenders.stdout)
+
+      # Setup the default layout pattern
+      layout = Logging::Layouts::Pattern.new
+      layout.pattern="%d (%l) %m <%c>\n"
+
+      # Set the layout to the stdout appender
+      appender = Logging.appenders.stdout
+      appender.layout=layout
+
+      Logging.logger['rubicante'].add_appenders(appender)
       @log.level = debug ? :debug : :info
 
       # Set up logger for Environment
