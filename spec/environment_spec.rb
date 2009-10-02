@@ -53,7 +53,7 @@ describe "A Rubicante environment" do
     cmd = "Host #{hostname} provides website #{url0}, provides website #{url1}"
     @env.eval_host(cmd)
     @env.host[hostname].websites[0].url.should == url0 + '/'
-    @env.host[hostname].websites[1].url.should == url1
+    @env.host[hostname].websites[1].url.should == url1 + '/'
   end
 
   it "should have an eval_command method" do

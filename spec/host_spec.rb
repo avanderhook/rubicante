@@ -8,10 +8,10 @@ describe "A newtork host" do
 
     @host_with_sites = Rubicante::Host.new(@host_name)
     @sites = [
-      'www.rubicante-good-site.com',
-      'www.rubicante-bad-site.com',
-      'www.rubicante-worse-site.com',
-      'www.rubicante-redirect.com'
+      'www.rubicante-good-site.com/',
+      'www.rubicante-bad-site.com/',
+      'www.rubicante-worse-site.com/',
+      'www.rubicante-redirect.com/'
     ]
     @sites.each do |site|
       @host_with_sites.website(site)
