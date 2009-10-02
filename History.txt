@@ -10,6 +10,9 @@
   * Handle extened paths
     * Example: host www provides website my.railsapp.com/follow/my/path
     * Will perform an HTTP GET on the path when checking the return code
+* Logging improvements
+  * Set a new default logging pattern
+  * Fixed issue with a rouge newline character in Rubicante::Environment's debug logging
 
 === 0.0.7 / 2009-9-23
 
