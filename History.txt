@@ -4,6 +4,12 @@
 * Support empty lines in files and on the console
 * Gracefully handle missing files when the -r flag is used and log an error
 * Gracefully handle SocketErrors (typically unresolvable domain names) in website response code checking and log an error
+* Better parsing in website URLs
+  * Handle http://
+  * Handle https:// (with logged warning - we do not support HTTPS requests yet)
+  * Handle extened paths
+    * Example: host www provides website my.railsapp.com/follow/my/path
+    * Will perform an HTTP GET on the path when checking the return code
 
 === 0.0.7 / 2009-9-23
 
