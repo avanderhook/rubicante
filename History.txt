@@ -1,3 +1,13 @@
+=== 0.0.8 / 2009-10-2
+
+* Updated hash commenting so that a space is no longer necessary (i.e., '#comment' vs. '# comment' now works)
+* Support empty lines in files and on the console
+* Gracefully handle missing files when the -r flag is used
+
+=== 0.0.7 / 2009-9-23
+
+* Added support for hashed comments
+
 === 0.0.6 / 2009-5-29
 
 * Works with the latest version of the Logging gem
