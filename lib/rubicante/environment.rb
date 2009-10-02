@@ -33,15 +33,21 @@ module Rubicante
 
       if cmd =~ /^[#]/
         @log.debug "Determined command to be a comment, skipping"
-      else if not cmd == nil
-        cmd_root = 'eval_' + cmd.split[0].downcase
-        @log.debug "Determined command root to be: #{cmd_root}"
+        return
+      end
 
-        if self.respond_to?(cmd_root)
-          self.send(cmd_root, cmd)
-        else
-          raise NotImplementedError
-        end
+      if cmd == nil
+        @log.debug "Line is blank, skipping"
+        return
+      end
+
+      cmd_root = 'eval_' + cmd.split[0].downcase
+      @log.debug "Determined command root to be: #{cmd_root}"
+
+      if self.respond_to?(cmd_root)
+        self.send(cmd_root, cmd)
+      else
+        raise NotImplementedError
       end
     end
 
