@@ -31,13 +31,17 @@ module Rubicante
     def eval_command(cmd)
       @log.debug "Received command: #{cmd}"
 
-      cmd_root = 'eval_' + cmd.split[0].downcase
-      @log.debug "Determined command root to be: #{cmd_root}"
-
-      if self.respond_to?(cmd_root)
-        self.send(cmd_root, cmd)
+      if cmd =~ /^[#]/
+        @log.debug "Determined command to be a comment, skipping"
       else
-        raise NotImplementedError if not cmd_root == 'eval_#'
+        cmd_root = 'eval_' + cmd.split[0].downcase
+        @log.debug "Determined command root to be: #{cmd_root}"
+
+        if self.respond_to?(cmd_root)
+          self.send(cmd_root, cmd)
+        else
+          raise NotImplementedError
+        end
       end
     end
 

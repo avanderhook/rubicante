@@ -78,6 +78,7 @@ describe "A Rubicante environment" do
 
   it "should handle comments" do
     lambda { @env.eval_command('# this is a comment') }.should_not raise_error(NotImplementedError)
+    lambda { @env.eval_command('#this is also a comment') }.should_not raise_error(NotImplementedError)
   end
 
   after :each do
