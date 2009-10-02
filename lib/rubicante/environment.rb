@@ -29,7 +29,7 @@ module Rubicante
     # Evaluate a command, sending it off to the appropriate
     # 'eval_*' method.  Otherwise, through a NotImplementedError
     def eval_command(cmd)
-      @log.debug "Received command: #{cmd}"
+      @log.debug "Received command: #{cmd.chomp}"
 
       if cmd =~ /^[#]/
         @log.debug "Determined command to be a comment, skipping"
