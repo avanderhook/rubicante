@@ -36,7 +36,7 @@ module Rubicante
         return
       end
 
-      if cmd == nil
+      if not cmd =~ /\S/
         @log.debug "Line is blank, skipping"
         return
       end
