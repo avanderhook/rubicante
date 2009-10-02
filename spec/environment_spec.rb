@@ -43,7 +43,7 @@ describe "A Rubicante environment" do
     url = 'www.rubicante-example.com'
     cmd = "Host #{hostname} provides website #{url}"
     @env.eval_host(cmd)
-    @env.host[hostname].websites[0].url.should == url
+    @env.host[hostname].websites[0].url.should == url + '/'
   end
 
   it "should handle specifying multiple websites" do
@@ -52,7 +52,7 @@ describe "A Rubicante environment" do
     url1 = 'test2'
     cmd = "Host #{hostname} provides website #{url0}, provides website #{url1}"
     @env.eval_host(cmd)
-    @env.host[hostname].websites[0].url.should == url0
+    @env.host[hostname].websites[0].url.should == url0 + '/'
     @env.host[hostname].websites[1].url.should == url1
   end
 
