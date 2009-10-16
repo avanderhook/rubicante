@@ -62,7 +62,6 @@ module Rubicante
     # Checks to see if the site is OK.  If it is not, it returns
     # a Rubicante::WebsiteError
     def wrong?
-      @log.debug "Checking website '#{@url}' for problems"
       if not self.is_ok?
         WebsiteError.new(@url, self.response_code)
       end

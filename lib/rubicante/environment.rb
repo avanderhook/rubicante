@@ -29,8 +29,6 @@ module Rubicante
     # Evaluate a command, sending it off to the appropriate
     # 'eval_*' method.  Otherwise, through a NotImplementedError
     def eval_command(cmd)
-      @log.debug "Received command: #{cmd.chomp}"
-
       if cmd =~ /^[#]/
         @log.debug "Determined command to be a comment, skipping"
         return
@@ -42,7 +40,7 @@ module Rubicante
       end
 
       cmd_root = 'eval_' + cmd.split[0].downcase
-      @log.debug "Determined command root to be: #{cmd_root}"
+      @log.debug "Received #{cmd_root} command: '#{cmd}'"
 
       if self.respond_to?(cmd_root)
         self.send(cmd_root, cmd)
@@ -54,7 +52,6 @@ module Rubicante
     # Perform polish on a command starting with 'host' and
     # evaluate it
     def eval_host(cmd)
-      @log.debug "Polishing 'host' command"
       cmd.gsub!(/^[Hh]ost\s([\S]+)\s/, 'host["\1"]')
       cmd.gsub!(/website\s([^,]+)/, '.website("\1")')
       cmd.gsub!(/port\s([^,]+)/, '.port(\1)')
@@ -73,7 +70,6 @@ module Rubicante
     # Perform polish on a command starting with 'what' and
     # evaluate it
     def eval_what(cmd)
-      @log.debug "Polishing 'what' command"
       # Clean up some bubble words
       cmd.gsub!(/^[Ww]hat\s/, '')
       cmd.gsub!(/is\s/, '')
@@ -87,7 +83,6 @@ module Rubicante
       result = []
 
       host.hosts.keys.each do |key|
-        @log.debug "Checking host #{host[key].name}..."
         result << host[key].wrong?
       end
 
