@@ -184,6 +184,10 @@ module Rubicante
         return @result
       end
 
+      def sp_level_lt(version)
+        # pending
+      end
+
       def check_services
         @services.each do |service|
           yield service, is_running?(service)

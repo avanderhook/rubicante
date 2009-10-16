@@ -44,10 +44,15 @@ module Rubicante
       end
     end
 
+    def polish_cleanup(cmd)
+      cmd.gsub!(/,/, '')    # clean up commas
+      cmd.gsub!(/[\s]/, '') # clean up white space
+    end
+
     # Perform polish on a command starting with 'host' and
     # evaluate it
     def eval_host(cmd)
-      cmd.gsub!(/^[Hh]ost\s([\S]+)\s/, 'host["\1"]')
+      cmd.gsub!(/^[Hh]ost\s([\S]+)[\s]?/, 'host["\1"]')
       cmd.gsub!(/website\s([^,]+)/, '.website("\1")')
       cmd.gsub!(/port\s([^,]+)/, '.port(\1)')
       cmd.gsub!(/service\s([^,]+)/, '.service("\1")')
@@ -55,8 +60,8 @@ module Rubicante
       # Clean up some bubble words
       cmd.gsub!(/listens\son\s/, '')
       cmd.gsub!(/provides\s/, '')
-      cmd.gsub!(/,/, '')    # clean up commas
-      cmd.gsub!(/[\s]/, '') # clean up white space
+
+      polish_cleanup(cmd)
 
       @log.debug "Evaluating polished 'host' command: #{cmd}"
       instance_eval cmd
@@ -65,12 +70,29 @@ module Rubicante
     # Perform polish on a command starting with 'what' and
     # evaluate it
     def eval_what(cmd)
+      cmd.gsub!(/[Hh]ost[s]?\s/, 'hosts')
+      cmd.gsub!(/[Ss]ervice [Pp]ack\s/, '.sp_level')
+      cmd.gsub!(/([\s]*)<([\s]*)([\S]+)/, '_lt(\3)')
+
       # Clean up some bubble words
       cmd.gsub!(/^[Ww]hat\s/, '')
       cmd.gsub!(/is\s/, '')
+      cmd.gsub!(/have\s/, '')
+
+      polish_cleanup(cmd)
 
       @log.debug "Evaluating polished 'what' command: #{cmd}"
       instance_eval cmd
+    end
+
+    def sp_level_lt(version)
+      if is_windows?
+        result = []
+
+        host.hosts.keys.each do |key|
+          result << host[key].sp_level_lt(version)
+        end
+      end
     end
 
     def wrong?
