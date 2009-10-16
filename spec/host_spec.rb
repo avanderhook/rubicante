@@ -1,5 +1,6 @@
 require File.join(File.expand_path(File.dirname(__FILE__)),"helper")
 require "#{LIB_DIR}/host" 
+require "#{LIB_DIR_OS}/os_functions.rb"
 
 describe "A newtork host" do
   before :each do
@@ -114,6 +115,14 @@ describe "A newtork host" do
 
   it "should support pinging" do
     @host.respond_to?('ping').should == true
+  end
+
+  it "should support checking sp_level" do
+    @host.respond_to?('sp_level').should == true if is_windows?
+  end
+
+  it "should support checking if a service is running" do
+    @host.respond_to?('is_running?').should == true if is_windows?
   end
 
   it "should update HostError.ping to true for alive hosts" do

@@ -168,6 +168,22 @@ module Rubicante
         return result
       end
 
+      # Returns the service pack level of the installed Windows operating system
+      def sp_level
+        query = "SELECT ServicePackMajorVersion, ServicePackMinorVersion FROM Win32_OperatingSystem"
+
+        @result = 0
+
+        @log.debug "Checking service pack version for host '#{@name}'"
+        get_wmi.ExecQuery(query).each do |record|
+          sp_level = "#{record.ServicePackMajorVersion}.#{record.ServicePackMinorVersion}"
+          @log.debug "Determined host '#{@name}' is running SP#{sp_level}"
+          @result = sp_level.to_f
+        end
+
+        return @result
+      end
+
       def check_services
         @services.each do |service|
           yield service, is_running?(service)
