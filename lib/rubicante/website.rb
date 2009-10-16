@@ -8,7 +8,7 @@ module Rubicante
     attr_reader :fqdn, :path, :url
     
     def initialize(url)
-      @log = Logging.logger[self]
+      @log = Logging.logger['rubicante']
 
       @log.warn "Recieved HTTPS (TCP/443) URL. This version of Rubicante will only check HTTP (TCP/80) when the check is run" if url =~ /^https/
 

@@ -12,18 +12,13 @@ module Rubicante
     def initialize
       @host = HostGroup.instance
 
-      @log = Logging.logger[self]
+      @log = Logging.logger['rubicante']
 
       if is_windows?
         @log.debug "Detected base operating platform is Windows-based"
       else
         @log.debug "Detected base operating platform is NON Windows-based"
       end
-
-      # Prepare Host logger
-      @appender = Logging.logger['rubicante']
-      Logging.logger['Rubicante::Host'].add_appenders(Logging.appenders.stdout) if not @appender.nil?
-      Logging.logger['Rubicante::Host'].level = @log.level
     end
 
     # Evaluate a command, sending it off to the appropriate

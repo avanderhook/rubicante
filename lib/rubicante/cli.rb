@@ -11,7 +11,7 @@ module Rubicante
 
       # Setup the default layout pattern
       layout = Logging::Layouts::Pattern.new
-      layout.pattern="%d (%l) %m <%c>\n"
+      layout.pattern="%d (%l) %m\n"
 
       # Set the layout to the stdout appender
       appender = Logging.appenders.stdout
@@ -21,8 +21,8 @@ module Rubicante
       @log.level = debug ? :debug : :info
 
       # Set up logger for Environment
-      Logging.logger['Rubicante::Environment'].add_appenders(Logging.appenders.stdout)
-      Logging.logger['Rubicante::Environment'].level = @log.level
+      #Logging.logger['Rubicante::Environment'].add_appenders(Logging.appenders.stdout)
+      #Logging.logger['Rubicante::Environment'].level = @log.level
 
       # Prepare Environment
       @env = Environment.new
