@@ -81,7 +81,7 @@ module Rubicante
     # Handles sending the command to the Environment and dealing
     # with any return values that require output to the user
     def handle(cmd)
-      exit if cmd == "exit"
+      exit if cmd == "exit" or cmd == "quit"
 
       begin
         result = @env.eval_command(cmd)
